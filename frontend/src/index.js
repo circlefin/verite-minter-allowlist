@@ -3,7 +3,6 @@ import { SiweMessage } from 'siwe';
 import { buildKycVerificationOffer } from "verite";
 // import Web3 from "web3";
 import { json } from "./abi";
-const address = "0x5FbDB2315678afecb367f032d93F642f64180aa3"
 
 // const web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
 
@@ -96,13 +95,13 @@ async function mintPresale() {
 
     const contract = new ethers.Contract(address, json(), signer);
     const allowList = {
-        allow: "0xCdCDC174901B12e87Cc82471A2A2Bd6181c89392"
+        allow: address
       }
     // alert("You're on the allow list! Time to mint!");
     let overrides = {
         value: ethers.utils.parseEther((0.06).toString()),
       };
-    const mint = await contract.mintAllowList(1, allowList, sig, "0xCdCDC174901B12e87Cc82471A2A2Bd6181c89392", overrides);
+    const mint = await contract.mintAllowList(1, allowList, sig, address, overrides);
     console.log(mint);
     alert("Minted successfully");
 }
