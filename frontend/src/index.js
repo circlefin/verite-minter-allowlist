@@ -53,7 +53,7 @@ async function signInWithEthereum() {
 
 async function requestAllowlistAccess() {
     try {
-        const res = await fetch(`${BACKEND_ADDR}/request_allowlist`, {
+        const res = await fetch(`${BACKEND_ADDR}/requestAllowlist`, {
             credentials: 'include',
         });
         const message = await res.json();

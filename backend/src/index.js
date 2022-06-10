@@ -160,7 +160,7 @@ app.post("/sign_in", async function (req, res) {
   }
 });
 
-app.get("/request_allowlist", async function (req, res) {
+app.get("/requestAllowlist", async function (req, res) {
   if (!req.session.siwe) {
     res.status(401).json({ message: "You have to first sign_in" });
     return;
