@@ -21,7 +21,7 @@ import { v4 as uuidv4 } from "uuid";
 import ethers from "ethers";
 
 
-const config = JSON.parse(fs.readFileSync("config.json"));
+const config = JSON.parse(fs.readFileSync("../config.json"));
 
 const validateAllowlistAccess = (address) => {
   return config.addressesForAllowlist.includes(address);
@@ -72,9 +72,7 @@ const createApplication = async (issuerDidKey, subject) => {
 };
 
 const getPresentation = async (issuerDidKey, application) => {
-  console.log(issuerDidKey.privateKey);
   issuerDidKey.privateKey = fromHexString(issuerDidKey.privateKey);
-  console.log(issuerDidKey.privateKey);
   issuerDidKey.publicKey = fromHexString(issuerDidKey.publicKey);
 
   const decodedApplication = await decodeCredentialApplication(application);

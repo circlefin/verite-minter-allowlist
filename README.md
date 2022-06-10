@@ -2,6 +2,36 @@
 
 This example app shows how a project might use verifiable credentials to add people to a minting allow list. Today, projects often manage allow lists on-chain. This is expensive, but it's secure. Verite + VCs should allow for off-chain allow list management. 
 
+## Getting Started
+
+1. Create a file named `config.json` in the root directory. Enter the following contents to simulate the settings of the backend (whitelisting) service.
+
+```json
+{
+  "addressesForAllowlist": ["<YOUR ETHEREUM ADDRESS>"],
+  "contractAddress": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+  "chainId": 1337
+}
+```
+
+2. Install and run the backend service
+
+```sh
+cd backend
+npm install
+npm run dev
+```
+
+3. In a new terminal, install and run the front service
+
+```sh
+cd frontend
+npm install
+npm run dev
+```
+
+4.  Run the contract code (TODO)
+
 ### How does it work?
 
 This is just an example - a production implementation would need to take additional security precautions. 
