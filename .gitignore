@@ -1,0 +1,5 @@
+.DS_Store
+node_modules
+backend/db.json
+backend/issuer.json
+config.json

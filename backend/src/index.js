@@ -20,14 +20,11 @@ import { randomBytes } from "crypto";
 import { v4 as uuidv4 } from "uuid";
 import ethers from "ethers";
 
-const addressesForAllowlist = ["0xCdCDC174901B12e87Cc82471A2A2Bd6181c89392"];
+
+const config = JSON.parse(fs.readFileSync("../config.json"));
 
 const validateAllowlistAccess = (address) => {
-  if (addressesForAllowlist.includes(address)) {
-    return true;
-  }
-
-  return false;
+  return config.addressesForAllowlist.includes(address);
 };
 
 const fromHexString = (hexString) =>
@@ -171,6 +168,7 @@ app.get("/request_allowlist", async function (req, res) {
   const address = req.session.siwe.address;
   if (!validateAllowlistAccess(address)) {
     res.status(401).json({ message: "You are not eligible for the allowlist" });
+    return;
   }
 
   const { subject } = await getOrCreateDidKey(address);
@@ -245,8 +243,8 @@ app.post("/verifyMintAccess", async function (req, res) {
     const domain = {
       name: "AllowList",
       version: "1.0",
-      chainId: 1337,
-      verifyingContract: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      chainId: config.chainId,
+      verifyingContract: config.contractAddress,
     };
     const types = {
       AllowList: [{ name: "allow", type: "address" }, 
