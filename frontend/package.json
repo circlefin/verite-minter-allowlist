@@ -17,7 +17,7 @@
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
     "uuid": "^8.3.2",
-    "verite": "^0.0.1"
+    "verite": "^0.0.2"
   },
   "devDependencies": {
     "html-webpack-plugin": "^5.5.0",
