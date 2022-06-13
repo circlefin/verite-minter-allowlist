@@ -15,7 +15,7 @@ contract BASEERC721 is ERC721Enumerable, Ownable, EIP712("AllowList", "1.0") {
         address allow; // address of the subject of the verification
     }
 
-    string private PREVIOUS_SIGNATURE = "0";
+    bytes private PREVIOUS_SIGNATURE = "0";
     string public BASE_URI;
     uint256 public MAX_SUPPLY = 10000;
     uint256 public PRICE = 60000000000000000;
@@ -56,6 +56,7 @@ contract BASEERC721 is ERC721Enumerable, Ownable, EIP712("AllowList", "1.0") {
             uint256 tokenId = totalSupply() + 1;
             _safeMint(addr, tokenId);
         }
+        PREVIOUS_SIGNATURE = signature;
     }
 
     function mint(address addr, uint256 quantity) public payable {

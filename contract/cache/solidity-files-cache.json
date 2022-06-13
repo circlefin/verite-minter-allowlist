@@ -629,8 +629,8 @@
       ]
     },
     "/Users/polluterofminds/Development/Centre/verite-minter-allowlist/contract/contracts/Base_ERC721.sol": {
-      "lastModificationDate": 1654613491555,
-      "contentHash": "10676724306bdcc8a0139f207ae100b6",
+      "lastModificationDate": 1655119814085,
+      "contentHash": "9a7e894293b2f3c55691f9091e318c33",
       "sourceName": "contracts/Base_ERC721.sol",
       "solcConfig": {
         "version": "0.8.4",
