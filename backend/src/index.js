@@ -57,6 +57,11 @@ const getIssuerKey = async () => {
     issuer = randomDidKey(randomBytes);
     issuer.privateKey = toHexString(issuer.privateKey);
     issuer.publicKey = toHexString(issuer.publicKey);
+    if (!issuerDidKey.signingKey) {
+      const randomWallet = ethers.Wallet.createRandom();
+      const privateKey = randomWallet._signingKey().privateKey;
+      issuerDidKey.signingKey = privateKey;
+    }
     fs.writeFileSync("issuer.json", JSON.stringify(issuer));
   }
 
@@ -223,17 +228,10 @@ app.post("/verifyMintAccess", async function (req, res) {
       return res.status(401).json({ message: "Could not verify credential" });
     }
 
-    //    Generate nonce, and return signature for use in minting
-    let currentNonce = parseInt(fs.readFileSync("nonce.txt"), 10);
-    let newNonce = currentNonce++;
-
     let privateKey = "";
 
     if (!issuerDidKey.signingKey) {
-      let randomWallet = ethers.Wallet.createRandom();
-      privateKey = randomWallet._signingKey().privateKey;
-      issuerDidKey.signingKey = privateKey;
-      fs.writeFileSync("issuer.json", JSON.stringify(issuerDidKey));
+      throw new Error("No signing key found");
     } else {
       privateKey = issuerDidKey.signingKey;
     }
@@ -247,17 +245,14 @@ app.post("/verifyMintAccess", async function (req, res) {
       verifyingContract: config.contractAddress,
     };
     const types = {
-      AllowList: [{ name: "allow", type: "address" }, 
-      // { name: "nonce", type: "uint256" }
+      AllowList: [{ name: "allow", type: "address" }
     ],
     };
     const allowList = {
-      allow: address,
-      // nonce: newNonce
+      allow: address
     };
 
     const signature = await wallet._signTypedData(domain, types, allowList);
-    fs.writeFileSync("nonce.txt", newNonce.toString());
 
     return res.send(signature);
   } catch (error) {

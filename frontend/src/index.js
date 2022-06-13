@@ -97,7 +97,7 @@ async function mintPresale() {
     const allowList = {
         allow: address
       }
-    // alert("You're on the allow list! Time to mint!");
+    
     let overrides = {
         value: ethers.utils.parseEther((0.06).toString()),
       };

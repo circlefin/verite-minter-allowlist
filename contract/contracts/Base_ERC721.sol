@@ -15,7 +15,7 @@ contract BASEERC721 is ERC721Enumerable, Ownable, EIP712("AllowList", "1.0") {
         address allow; // address of the subject of the verification
     }
 
-    string private PREVIOUS_NONCE = "0";
+    string private PREVIOUS_SIGNATURE = "0";
     string public BASE_URI;
     uint256 public MAX_SUPPLY = 10000;
     uint256 public PRICE = 60000000000000000;
@@ -46,13 +46,12 @@ contract BASEERC721 is ERC721Enumerable, Ownable, EIP712("AllowList", "1.0") {
         uint256 quantity,
         AllowList memory dataToVerify,
         bytes memory signature,
-        address addr,
-        string memory nonce
+        address addr
     ) external payable {
         require(totalSupply() <= MAX_SUPPLY, "Would exceed max supply");
         require(msg.value >= PRICE, "insufficient funds");
         require(quantity <= MAX_PER_TX, "cannot mint that many");
-        require(_verifySignature(dataToVerify, signature, nonce), "Invalid signature");
+        require(_verifySignature(dataToVerify, signature), "Invalid signature");
         for (uint256 i = 0; i < quantity; i++) {
             uint256 tokenId = totalSupply() + 1;
             _safeMint(addr, tokenId);
@@ -72,19 +71,18 @@ contract BASEERC721 is ERC721Enumerable, Ownable, EIP712("AllowList", "1.0") {
 
     function _verifySignature(
         AllowList memory dataToVerify,
-        bytes memory signature, 
-        string memory nonce
+        bytes memory signature
     ) internal view returns (bool) {
         bytes32 digest = _hashTypedDataV4(
             keccak256(
                 abi.encode(
-                    keccak256("AllowList(address allow, string nonce)"),
+                    keccak256("AllowList(address allow)"),
                     dataToVerify.allow
                 )
             )
         );
 
-        require(keccak256(bytes(nonce)) != keccak256(bytes(PREVIOUS_NONCE)), "Invalid nonce");
+        require(keccak256(bytes(signature)) != keccak256(bytes(PREVIOUS_SIGNATURE)), "Invalid nonce");
         require(msg.sender == dataToVerify.allow, "Not on allow list");
 
         address signerAddress = ECDSA.recover(digest, signature);
